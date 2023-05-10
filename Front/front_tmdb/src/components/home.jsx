@@ -13,6 +13,7 @@ const Home = ({ user }) => {
       >
         WELCOME HOME
       </h1>
+
       {user.email ? (
         <h3
           style={{

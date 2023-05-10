@@ -30,7 +30,7 @@ const Card = ({ tvShow, movie, chosen }) => {
           class="card-img-top"
         ></img>
         <div class="card-body">
-          <h5 class="card-title">{data.title}</h5>
+          <h5 class="card-title">{data.title || data.name}</h5>
           <p class="card-text">{data.overview}</p>
         </div>
       </div>
