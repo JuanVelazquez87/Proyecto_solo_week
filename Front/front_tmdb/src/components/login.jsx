@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser }) => {
+  const Navigate = useNavigate();
   const [loguinData, setLogindata] = React.useState({
     email: "",
     password: "",
   });
-  const [user, setUser] = useState({});
+
   const handleChange = (event) => {
     setLogindata({
       ...loguinData,
       [event.target.name]: event.target.value,
     });
   };
-  console.log("USER >>", user);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
       .post("http://localhost:8080/user/login", loguinData, {
         withCredentials: true,
       })
-      .then((response) => setUser(response.data))
+      .then((response) => {
+        setUser(response.data);
+        Navigate("/");
+      })
+
       .catch((err) => console.log(err));
   };
 

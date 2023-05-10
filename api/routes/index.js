@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
   res.send("API OK");
 });
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   res.clearCookie("token").sendStatus(204);
 });
 

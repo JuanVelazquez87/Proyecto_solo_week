@@ -1,6 +1,7 @@
 import React from "react";
 
-const Home = () => {
+const Home = ({ user }) => {
+  console.log("USER EN HOME >>", user);
   return (
     <>
       <h1
@@ -12,6 +13,25 @@ const Home = () => {
       >
         WELCOME HOME
       </h1>
+      {user.email ? (
+        <h3
+          style={{
+            textAlign: "center",
+
+            color: "red",
+          }}
+        >{`${user.name} ${user.lastname}`}</h3>
+      ) : (
+        <h3
+          style={{
+            textAlign: "center",
+
+            color: "red",
+          }}
+        >
+          logueate o registrate
+        </h3>
+      )}
     </>
   );
 };

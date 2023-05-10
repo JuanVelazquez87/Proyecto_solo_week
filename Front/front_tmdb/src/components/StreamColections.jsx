@@ -35,13 +35,15 @@ const StreamColections = ({
             onClick={() => handleSelect(item)}
             className="col-md-4 mb-3"
           >
-            <Link to={`${item.id}`}>
+            <Link style={{ textDecoration: "none" }} to={`${item.id}`}>
               <img
                 src={`${IMAGE_PATH + item.poster_path}`}
                 height={600}
                 width="100%"
               ></img>
-              <h4 className="text-center">{item.title}</h4>
+              <h4 style={{ color: "black" }} className="text-center">
+                {item.title || item.name}
+              </h4>
             </Link>
           </div>
         ))}

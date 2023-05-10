@@ -8,12 +8,13 @@ import Card from "./commons/card";
 import StreamColections from "./components/StreamColections";
 import Home from "./components/home";
 import Login from "./components/login";
+import { AuthContext } from "./context/authContext";
 function App() {
   const API_KEY = "be677370ffe45f2acf32f2da2e142c90";
   const API_URL = "https://api.themoviedb.org/3/";
 
   //ESTADOS:
-
+  const [user, setUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const [movie, setMovie] = React.useState({});
 
@@ -25,7 +26,7 @@ function App() {
   const [searchColections, setSearchColections] = React.useState([]);
   const [chosen, setChosen] = React.useState({});
 
-  console.log("CHOSEN >> ", chosen);
+  console.log("tvcollect >> ", tvColections);
 
   //obtener todas las movies
   useEffect(() => {
@@ -63,10 +64,14 @@ function App() {
 
   return (
     <div>
-      <Navbar setSearchColections={setSearchColections} />
+      <Navbar
+        setUser={setUser}
+        user={user}
+        setSearchColections={setSearchColections}
+      />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home user={user} />} />
         <Route
           path="/movie"
           element={<StreamColections handleSelect={setMovie} movies={movies} />}
@@ -93,7 +98,7 @@ function App() {
         <Route path="tv/:id" element={<Card tvShow={tvShow} />} />
         <Route path="search/:id" element={<Card chosen={chosen} />} />
         <Route path="/singup" element={<Singup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
       </Routes>
     </div>
   );
