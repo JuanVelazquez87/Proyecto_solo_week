@@ -4,12 +4,4 @@ const userRouter = require("./userRouter");
 
 router.use("/user", userRouter);
 
-router.get("/", (req, res) => {
-  res.send("API OK");
-});
-
-router.get("/logout", (req, res) => {
-  res.clearCookie("token").sendStatus(204);
-});
-
 module.exports = router;
