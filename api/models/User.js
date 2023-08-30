@@ -7,9 +7,8 @@ class User extends Sequelize.Model {
     return bcrypt.hash(password, salt);
   }
   validatePassword = function (password) {
-    //console.log("pssword >> ", password, "this >> ", this.salt);
     return this.createHash(password, this.salt).then(
-      (passwordHasheado) => passwordHasheado === this.password //aca retornamos un boolean
+      (passwordHasheado) => passwordHasheado === this.password
     );
   };
 }
