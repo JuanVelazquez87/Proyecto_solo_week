@@ -69,6 +69,7 @@ export default function SignUp() {
             <Grid sx={{ color: "white" }} container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  back
                   autoComplete="given-name"
                   name="firstName"
                   required

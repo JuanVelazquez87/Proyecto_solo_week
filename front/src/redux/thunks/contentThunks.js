@@ -1,13 +1,18 @@
 import axios from "axios";
 import { setAllContent, setContentDetails } from "../slices/contentSlice";
 
-//const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-//const apiUrl = import.meta.env.VITE_TMDB_API_URL;
+const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+const apiUrl = import.meta.env.VITE_TMDB_API_URL;
+const serverUrl = import.meta.env.VITE_REACT_APP_SERVER_URL;
+
+console.log("apiKEY", apiKey);
 
 export const fetchAllMovies = async (dispatch) => {
   try {
+    console.log("apiurl", apiUrl);
+
     const response = await axios.get(
-      "https://api.themoviedb.org/3/trending/movie/day?api_key=be677370ffe45f2acf32f2da2e142c90"
+      `${apiUrl}trending/movie/day?api_key=${apiKey}`
     );
     dispatch(setAllContent(response.data.results));
   } catch (err) {
@@ -18,7 +23,7 @@ export const fetchAllMovies = async (dispatch) => {
 export const fetchAllTvContent = async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://api.themoviedb.org/3/trending/tv/day?api_key=be677370ffe45f2acf32f2da2e142c90"
+      `${apiUrl}trending/tv/day?api_key=${apiKey}`
     );
     dispatch(setAllContent(response.data.results));
   } catch (err) {
@@ -28,16 +33,13 @@ export const fetchAllTvContent = async (dispatch) => {
 
 export const fetchSearchContent = async (dispatch, searchTerm) => {
   try {
-    const response = await axios.get(
-      "https://api.themoviedb.org/3/search/multi",
-      {
-        params: {
-          api_key: "be677370ffe45f2acf32f2da2e142c90",
+    const response = await axios.get(`${apiUrl}search/multi`, {
+      params: {
+        api_key: apiKey,
 
-          query: searchTerm,
-        },
-      }
-    );
+        query: searchTerm,
+      },
+    });
 
     dispatch(setAllContent(response.data.results));
   } catch (err) {
@@ -47,16 +49,12 @@ export const fetchSearchContent = async (dispatch, searchTerm) => {
 
 export const fetchContentDetail = async (dispatch, id, media_type) => {
   try {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/${media_type}/${id}`,
-      {
-        params: {
-          api_key: "be677370ffe45f2acf32f2da2e142c90",
-          language: "en-US",
-        },
-      }
-    );
-    console.log("lo que le mando al setcontentdetails >> ", response.data);
+    const response = await axios.get(`${apiUrl}${media_type}/${id}`, {
+      params: {
+        api_key: apiKey,
+        language: "en-US",
+      },
+    });
     dispatch(setContentDetails(response.data));
   } catch (err) {
     console.log(err);
