@@ -17,6 +17,10 @@ User.init(
     email: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     password: {
       type: Sequelize.STRING,
@@ -25,7 +29,7 @@ User.init(
     salt: {
       type: Sequelize.STRING,
     },
-    name: {
+    firstName: {
       type: Sequelize.STRING,
       allowNull: false,
     },

@@ -3,12 +3,19 @@ const { generateToken } = require("../utils/tokens");
 
 const signup = async (req, res) => {
   try {
-    const { email, password, name, lastName } = req.body;
-    const data = await User.findOrCreate({
-      where: { email, password, name, lastName },
+    const { email, password, firstName, lastName } = req.body;
+
+    const [newUser, createUser] = await User.findOrCreate({
+      where: { email },
+      defaults: { firstName, lastName, email, password },
     });
-    res.status(200).json(data);
+    if (!createUser) {
+      res.status(409).json("Error: user alredy exist");
+    } else {
+      res.status(200).json(newUser);
+    }
   } catch (err) {
+    console.error(err);
     res.status(500).send(err);
   }
 };
