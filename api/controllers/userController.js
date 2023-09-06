@@ -28,10 +28,10 @@ const login = async (req, res) => {
       where: { email },
     });
 
-    if (!user) return res.send(401);
+    if (!user) return res.status(401).json("error: incorrect information");
     const payload = {
       email: user.email,
-      name: user.name,
+      name: user.firstName,
       lastname: user.lastName,
     };
 
@@ -41,10 +41,11 @@ const login = async (req, res) => {
       return res.send(401);
     } else {
       let token = generateToken(payload);
-
-      res.cookie("token", token).send(payload);
+      console.log("token", token);
+      res.cookie("token", token, { httpOnly: true }).json(payload, token);
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 };
