@@ -14,6 +14,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { signinAxios } from "../redux/thunks/userThunks";
 import { useDispatch } from "react-redux";
+import { setToken } from "../redux/slices/authSlice";
+import { setUser } from "../redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,6 +37,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const Navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,7 +47,9 @@ export default function SignIn() {
     const password = data.get("password");
     const sendData = { email, password };
     const { payload, token } = await signinAxios(sendData);
-    console.log("TOKEN >> ", token);
+    dispatch(setToken(token));
+    dispatch(setUser(payload));
+    Navigate("/");
   };
 
   return (

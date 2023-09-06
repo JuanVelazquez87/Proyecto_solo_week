@@ -41,7 +41,6 @@ const login = async (req, res) => {
       return res.send(401);
     } else {
       let token = generateToken(payload);
-      console.log("token", token);
       res.cookie("token", token, { httpOnly: true }).json({ payload, token });
     }
   } catch (err) {
