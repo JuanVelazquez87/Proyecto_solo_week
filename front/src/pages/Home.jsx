@@ -1,7 +1,8 @@
 import React from "react";
-import Header from "../components/header/Header";
-
+import { useSelector } from "react-redux";
 export const Home = () => {
+  const user = useSelector((state) => state.user.userData);
+  console.log("user >>", user);
   return (
     <>
       <h1>Bienvenidos al Home</h1>
