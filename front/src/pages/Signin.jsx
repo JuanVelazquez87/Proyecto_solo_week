@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { signinAxios } from "../redux/thunks/userThunks";
+import { useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
