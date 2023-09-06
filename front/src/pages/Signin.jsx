@@ -33,14 +33,15 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     const email = data.get("email");
     const password = data.get("password");
     const sendData = { email, password };
-    signinAxios(sendData);
+    const { payload, token } = await signinAxios(sendData);
+    console.log("TOKEN >> ", token);
   };
 
   return (
