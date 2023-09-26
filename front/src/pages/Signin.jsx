@@ -47,6 +47,10 @@ export default function SignIn() {
     const password = data.get("password");
     const sendData = { email, password };
     const { payload, token } = await signinAxios(sendData);
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("payload", JSON.stringify(payload));
+
     dispatch(setToken(token));
     dispatch(setUser(payload));
     Navigate("/");

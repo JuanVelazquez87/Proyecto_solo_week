@@ -41,7 +41,13 @@ const login = async (req, res) => {
       return res.send(401);
     } else {
       let token = generateToken(payload);
-      res.cookie("token", token, { httpOnly: true }).json({ payload, token });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          sameSite: "strict", // o "lax" en desarrollo local
+          secure: false, // true si estás usando HTTPS en desarrollo local
+        })
+        .json({ payload, token });
     }
   } catch (err) {
     console.log(err);
