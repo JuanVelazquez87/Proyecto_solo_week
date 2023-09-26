@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./Styles/theme";
 import Header from "./components/header/Header";
 import Details from "./pages/Details";
-import { Home } from "./pages/home";
+import { Home } from "./pages/Home";
 import SignUp from "./pages/Signup";
 import Signin from "./pages/Signin";
 function App() {
