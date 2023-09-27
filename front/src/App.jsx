@@ -7,7 +7,20 @@ import Details from "./pages/Details";
 import { Home } from "./pages/Home";
 import SignUp from "./pages/Signup";
 import Signin from "./pages/Signin";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchUserData } from "./redux/thunks/userThunks";
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userData);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUserData(token, dispatch);
+    }
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>

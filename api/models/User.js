@@ -37,6 +37,10 @@ User.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    favorites: {
+      type: Sequelize.ARRAY(Sequelize.INTEGER),
+      defaultValue: [],
+    },
   },
   { sequelize: db, modelName: "user" }
 );
