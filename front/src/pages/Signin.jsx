@@ -3,8 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -46,14 +45,12 @@ export default function SignIn() {
     const email = data.get("email");
     const password = data.get("password");
     const sendData = { email, password };
-    const { payload, token } = await signinAxios(sendData);
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("payload", JSON.stringify(payload));
-
-    dispatch(setToken(token));
-    dispatch(setUser(payload));
-    Navigate("/");
+    const response = await signinAxios(sendData, dispatch);
+    if (response === "ok") {
+      Navigate("/");
+    } else {
+      console.log("Error: incorrect credentials");
+    }
   };
 
   return (

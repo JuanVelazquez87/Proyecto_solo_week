@@ -1,3 +1,4 @@
+const { token } = require("morgan");
 const User = require("../models/User");
 const { generateToken } = require("../utils/tokens");
 
@@ -33,6 +34,7 @@ const login = async (req, res) => {
       email: user.email,
       name: user.firstName,
       lastname: user.lastName,
+      favorites: user.favorites,
     };
 
     const boolean = await user.validatePassword(password);
@@ -41,13 +43,7 @@ const login = async (req, res) => {
       return res.send(401);
     } else {
       let token = generateToken(payload);
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          sameSite: "strict", // o "lax" en desarrollo local
-          secure: false, // true si estás usando HTTPS en desarrollo local
-        })
-        .json({ payload, token });
+      res.cookie("token", token).json({ payload, token });
     }
   } catch (err) {
     console.log(err);
@@ -64,8 +60,17 @@ const logout = async (req, res) => {
   }
 };
 
+const me = async (req, res) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  me,
 };
