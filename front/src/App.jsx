@@ -10,6 +10,9 @@ import Signin from "./pages/Signin";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserData } from "./redux/thunks/userThunks";
+import { Favorites } from "./pages/Favorites";
+import { Login } from "@mui/icons-material";
+import LogedHeader from "./components/header/LogedHeader";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
@@ -24,13 +27,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Header />
+        {user ? <LogedHeader /> : <Header />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contentGrid" element={<ContentGrid />} />
           <Route path="/details" element={<Details />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<Signin />} />
+
+          <Route
+            path="/favorites"
+            element={user ? <Favorites /> : <Signin />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
