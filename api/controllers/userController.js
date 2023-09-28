@@ -51,15 +51,6 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  try {
-    res.clearCookie("token").sendStatus(204);
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-
 const me = async (req, res) => {
   try {
     res.status(200).json(req.user);
@@ -71,6 +62,6 @@ const me = async (req, res) => {
 module.exports = {
   signup,
   login,
-  logout,
+
   me,
 };
