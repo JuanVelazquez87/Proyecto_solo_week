@@ -9,7 +9,7 @@ const serverUrl = import.meta.env.VITE_REACT_APP_SERVER_URL;
 export const signupAxios = async (sendData) => {
   try {
     const response = await axios.post(`${serverUrl}/user/signup`, sendData);
-    console.log("response.data", response.data);
+    return response.data;
   } catch (err) {
     console.log(err);
   }
@@ -34,15 +34,85 @@ export const signinAxios = async (sendData, dispatch) => {
 
 export const fetchUserData = async (token, dispatch) => {
   try {
-    const userResponse = await axios.get(`${serverUrl}/user/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const userResponse = await axios.get(
+      `${serverUrl}/user/me`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (userResponse) {
       dispatch(setUser(userResponse.data));
     }
   } catch (err) {
     console.log("Authorization error : ", err);
+  }
+};
+
+export const addToFavorites = async (
+  token,
+  contentId,
+  media_type,
+  dispatch
+) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/user/favorites/add/${contentId}`,
+      { data: { contentId, media_type } },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const user = response.data.user;
+
+    dispatch(setUser(user));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeFromFavorites = async (token, contentId) => {
+  try {
+    const response = await axios.delete(
+      `${serverUrl}/user/favorites/add/${contentId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchAllFavorites = async (array) => {
+  try {
+    const favoritePromises = array.map((favorite) => {
+      return axios.get(
+        `${apiUrl}${favorite.media_type}/${favorite.contentId}`,
+        {
+          params: {
+            api_key: apiKey,
+            language: "en-US",
+          },
+        }
+      );
+    });
+
+    const preFavorites = await Promise.all(favoritePromises);
+    const favorites = preFavorites.map((el) => el.data);
+
+    return favorites;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 };

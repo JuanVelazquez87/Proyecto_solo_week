@@ -51,6 +51,7 @@ export const fetchContentDetail = async (dispatch, id, media_type) => {
         language: "en-US",
       },
     });
+
     dispatch(setContentDetails(response.data));
   } catch (err) {
     console.log(err);

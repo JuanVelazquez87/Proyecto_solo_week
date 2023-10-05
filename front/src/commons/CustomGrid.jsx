@@ -38,8 +38,10 @@ const CustomGrid = ({ array }) => {
               }}
             >
               <CustomCard
+                contentId={content.id}
                 name={content.name || content.title}
                 poster_path={content.poster_path}
+                media_type={content.media_type}
               />
             </li>
           </Grid>
