@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const Details = () => {
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original/";
   const chosenContent = useSelector((state) => state.content.contentDetails);
-  console.log("chosenContent", chosenContent);
+
   const backgroundStyle = {
     backgroundImage: `url(${IMAGE_PATH + chosenContent.backdrop_path})`,
     backgroundSize: "cover",

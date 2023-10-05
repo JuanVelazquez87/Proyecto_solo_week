@@ -12,25 +12,24 @@ export default function UserMenu() {
   const Navigate = useNavigate();
   const user = useSelector((state) => state.user.userData);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleFavorites = () => {
+    Navigate("/favorites");
     setAnchorEl(null);
   };
   const handleLogOut = () => {
     localStorage.removeItem("token");
     dispatch(setUser(null));
     setAnchorEl(null);
-    //Navigate("/signin");
   };
 
   return (
     <div>
       <Button onClick={handleClick} variant="contained" color="primary">
-        {user.name.split("")[0] + user.lastname.split("")[0]}
+        {user.firstName.split("")[0] + user.lastName.split("")[0]}
       </Button>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}>
         <MenuItem onClick={handleFavorites}>Favorites</MenuItem>
