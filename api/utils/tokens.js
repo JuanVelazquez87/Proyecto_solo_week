@@ -12,6 +12,7 @@ function validateToken(token) {
   }
   try {
     const response = jwt.verify(token, SECRET);
+
     return response;
   } catch (error) {
     console.log(error);

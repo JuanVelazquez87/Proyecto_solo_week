@@ -1,7 +1,6 @@
 const { token } = require("morgan");
 const User = require("../models/User");
 const { generateToken } = require("../utils/tokens");
-const { user } = require("pg/lib/defaults");
 
 const signup = async (req, res) => {
   try {
@@ -54,7 +53,10 @@ const login = async (req, res) => {
 
 const me = async (req, res) => {
   try {
-    res.status(200).json(req.user);
+    const email = req.user.email;
+    const user = await User.findOne({ where: { email } });
+    console.log("user en /me", user);
+    res.status(200).json(user);
   } catch (err) {
     console.log(err);
   }
@@ -110,18 +112,22 @@ const addFavorite = async (req, res) => {
 const removeFromFavorites = async (req, res) => {
   try {
     const contentId = parseInt(req.params.contentId);
+
     const user = await User.findOne({
       where: {
         email: req.user.email,
       },
     });
+    console.log("user.favorites antes", user.favorites);
     if (user) {
       user.favorites = user.favorites.filter(
-        (favoritedID) => favoritedID != contentId
+        (favorite) => favorite.contentId != contentId
       );
-      await user.save();
 
-      res.status(200).json({ message: "content successfully removed" });
+      await user.save();
+      console.log("user.favorites antes despues", user.favorites);
+
+      res.status(200).json({ user, message: "content successfully removed" });
     } else {
       res.status(404).json({ message: "user not found" });
     }

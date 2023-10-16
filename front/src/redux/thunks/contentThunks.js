@@ -21,6 +21,7 @@ export const fetchAllTvContent = async (dispatch) => {
     const response = await axios.get(
       `${apiUrl}trending/tv/day?api_key=${apiKey}`
     );
+
     dispatch(setAllContent(response.data.results));
   } catch (err) {
     console.log(err);
@@ -51,7 +52,7 @@ export const fetchContentDetail = async (dispatch, id, media_type) => {
         language: "en-US",
       },
     });
-
+    console.log("en contentdetails", response.data);
     dispatch(setContentDetails(response.data));
   } catch (err) {
     console.log(err);

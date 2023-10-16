@@ -6,29 +6,44 @@ import { CardActionArea } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@emotion/react";
-import { addToFavorites } from "../redux/thunks/userThunks";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../redux/thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
-const CustomCard = ({ name, poster_path, contentId, media_type }) => {
+
+const CustomCard = ({ content }) => {
   //
   const user = useSelector((state) => state.user.userData);
 
   const dispatch = useDispatch();
   const theme = useTheme();
   const imgBaseUrl = "https://image.tmdb.org/t/p/original";
-  const completeImage = imgBaseUrl + poster_path;
+
+  const completeImage = imgBaseUrl + content.poster_path;
 
   //
-  let isFavorite = user.favorites.find(
-    (favorite) => favorite.contentId === contentId
-  );
 
-  console.log("prueba", contentId);
+  let contentId = content.id;
+  let media_type = content.media_type;
+  let isFavorite;
+  if (user) {
+    isFavorite = user.favorites.find(
+      (favorite) => favorite.contentId === content.id
+    );
+  }
 
   const handleFavorite = (event, contentId, media_type) => {
     event.stopPropagation();
     const token = localStorage.getItem("token");
 
     addToFavorites(token, contentId, media_type, dispatch);
+  };
+  const handleRemoveFavorite = (event, contentId) => {
+    event.stopPropagation();
+    const token = localStorage.getItem("token");
+
+    removeFromFavorites(token, contentId, dispatch);
   };
 
   return (
@@ -38,7 +53,7 @@ const CustomCard = ({ name, poster_path, contentId, media_type }) => {
           component="img"
           height="auto"
           image={completeImage}
-          alt={name}
+          alt={content.name || content.title}
           sx={{
             position: "relative",
           }}
@@ -58,7 +73,10 @@ const CustomCard = ({ name, poster_path, contentId, media_type }) => {
           </IconButton>
         ) : (
           <IconButton
-            aria-label="add to favorites"
+            aria-label="remove from favorites"
+            onClick={(event) =>
+              handleRemoveFavorite(event, contentId, media_type)
+            }
             sx={{
               position: "absolute",
               bottom: "10px",
@@ -80,7 +98,7 @@ const CustomCard = ({ name, poster_path, contentId, media_type }) => {
           padding: "5px",
         }}
       >
-        {name}
+        {content.name || content.title}
       </Typography>
     </Card>
   );

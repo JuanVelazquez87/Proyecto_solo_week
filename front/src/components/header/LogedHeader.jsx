@@ -63,14 +63,19 @@ export default function LogedHeader() {
 
   const handleSearchFilter = async (e) => {
     setSearchTerm(e.target.value);
+
     await fetchSearchContent(dispatch, searchTerm);
+
     Navigate("/contentGrid");
   };
   const handleMovieFilter = async () => {
+    localStorage.setItem("contentType", "movie");
     await fetchAllMovies(dispatch);
+
     Navigate("/contentGrid");
   };
   const handleTvFilter = async () => {
+    localStorage.setItem("contentType", "tv");
     await fetchAllTvContent(dispatch);
     Navigate("/contentGrid");
   };
