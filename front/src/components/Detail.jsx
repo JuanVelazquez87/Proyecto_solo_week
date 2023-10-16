@@ -1,17 +1,26 @@
-import { Box, Grid, Typography } from "@mui/material";
-import zIndex from "@mui/material/styles/zIndex";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const Details = () => {
+const Detail = () => {
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original/";
-  const chosenContent = useSelector((state) => state.content.contentDetails);
+  const user = useSelector((state) => state.user.userData);
+  let content = useSelector((state) => state.content.contentDetails);
+  console.log("content", content, "user", user);
 
   const backgroundStyle = {
-    backgroundImage: `url(${IMAGE_PATH + chosenContent.backdrop_path})`,
+    backgroundImage: `url(${IMAGE_PATH + content.backdrop_path})`,
     backgroundSize: "cover",
     opacity: 0.3,
   };
+  let isFavorite;
+  if (user) {
+    isFavorite = user.favorites.find(
+      (favorite) => favorite.contentId === content.id
+    );
+  }
+
   return (
     <Grid
       container
@@ -51,7 +60,7 @@ const Details = () => {
           }}
         >
           <img
-            src={`${IMAGE_PATH + chosenContent.poster_path}`}
+            src={`${IMAGE_PATH + content.poster_path}`}
             alt=""
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           />
@@ -60,18 +69,32 @@ const Details = () => {
       <Grid item xs={12} md={8} sx={{ padding: "5vh" }}>
         <Box sx={{ width: "100%", height: "50vh" }}>
           <Typography sx={{ fontFamily: "serif", fontSize: "4em" }}>
-            {chosenContent.title || chosenContent.name}
+            {content.title || content.name}
           </Typography>
           <Typography sx={{ fontFamily: "serif", fontSize: "1em" }}>
-            {chosenContent.overview}
+            {content.overview}
           </Typography>
           <Typography sx={{ fontFamily: "serif", fontSize: "1em" }}>
-            {chosenContent.overview}
+            {content.overview}
           </Typography>
         </Box>
       </Grid>
+      (
+      {isFavorite && (
+        <Button>
+          <DeleteIcon
+            sx={{
+              color: "lightgrey",
+              fontSize: "4em",
+              backgroundColor: "red",
+              borderRadius: "100%",
+              padding: "8px",
+            }}
+          />
+        </Button>
+      )}
+      )
     </Grid>
   );
 };
-
-export default Details;
+export default Detail;

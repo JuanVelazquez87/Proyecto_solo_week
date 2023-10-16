@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { setUser } from "../slices/userSlice";
+import { setFavorites, setUser } from "../slices/userSlice";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const apiUrl = import.meta.env.VITE_TMDB_API_URL;
@@ -69,33 +69,34 @@ export const addToFavorites = async (
     );
 
     const user = response.data.user;
-
+    console.log("user en addFavorites >> ", user);
     dispatch(setUser(user));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const removeFromFavorites = async (token, contentId) => {
+export const removeFromFavorites = async (token, contentId, dispatch) => {
   try {
     const response = await axios.delete(
-      `${serverUrl}/user/favorites/add/${contentId}`,
-      {},
+      `${serverUrl}/user/favorites/remove/${contentId}`,
+
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    console.log(response.data);
+
+    await dispatch(setUser(response.data.user));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const fetchAllFavorites = async (array) => {
+export const fetchAllFavorites = async (array, dispatch) => {
   try {
-    const favoritePromises = array.map((favorite) => {
+    const favoritePromises = await array.map((favorite) => {
       return axios.get(
         `${apiUrl}${favorite.media_type}/${favorite.contentId}`,
         {
@@ -110,7 +111,7 @@ export const fetchAllFavorites = async (array) => {
     const preFavorites = await Promise.all(favoritePromises);
     const favorites = preFavorites.map((el) => el.data);
 
-    return favorites;
+    dispatch(setFavorites(favorites));
   } catch (error) {
     console.log(error);
     throw error;

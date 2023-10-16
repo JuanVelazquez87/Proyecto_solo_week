@@ -3,9 +3,12 @@ import { Box } from "@mui/material";
 import CustomCard from "./CustomCard";
 import { Grid } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import { fetchContentDetail } from "../redux/thunks/contentThunks";
+//import { fetchContentDetail } from "../redux/thunks/contentThunks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Details } from "@mui/icons-material";
+import Detail from "../components/Detail";
+import { setContentDetails } from "../redux/slices/contentSlice";
 
 const CustomGrid = ({ array }) => {
   const dispatch = useDispatch();
@@ -13,10 +16,10 @@ const CustomGrid = ({ array }) => {
   const theme = useTheme();
 
   const handleCardClick = async (content) => {
-    const { id, media_type } = content;
-
-    await fetchContentDetail(dispatch, id, media_type);
-    Navigate("/details");
+    console.log("content", content);
+    localStorage.setItem("contentDetails", JSON.stringify(content));
+    dispatch(setContentDetails(content));
+    Navigate("/detail");
   };
 
   return (
@@ -37,12 +40,7 @@ const CustomGrid = ({ array }) => {
                 handleCardClick(content);
               }}
             >
-              <CustomCard
-                contentId={content.id}
-                name={content.name || content.title}
-                poster_path={content.poster_path}
-                media_type={content.media_type}
-              />
+              <CustomCard content={content} />
             </li>
           </Grid>
         ))}
