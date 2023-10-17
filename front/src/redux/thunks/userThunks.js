@@ -69,7 +69,7 @@ export const addToFavorites = async (
     );
 
     const user = response.data.user;
-    console.log("user en addFavorites >> ", user);
+
     dispatch(setUser(user));
   } catch (error) {
     console.log(error);
@@ -87,7 +87,7 @@ export const removeFromFavorites = async (token, contentId, dispatch) => {
         },
       }
     );
-
+    console.log("llego nomas", response.data.user);
     await dispatch(setUser(response.data.user));
   } catch (error) {
     console.log(error);

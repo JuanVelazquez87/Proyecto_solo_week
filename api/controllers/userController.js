@@ -118,14 +118,13 @@ const removeFromFavorites = async (req, res) => {
         email: req.user.email,
       },
     });
-    console.log("user.favorites antes", user.favorites);
+
     if (user) {
       user.favorites = user.favorites.filter(
         (favorite) => favorite.contentId != contentId
       );
 
       await user.save();
-      console.log("user.favorites antes despues", user.favorites);
 
       res.status(200).json({ user, message: "content successfully removed" });
     } else {
