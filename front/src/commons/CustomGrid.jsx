@@ -3,11 +3,10 @@ import { Box } from "@mui/material";
 import CustomCard from "./CustomCard";
 import { Grid } from "@mui/material";
 import { useTheme } from "@emotion/react";
-//import { fetchContentDetail } from "../redux/thunks/contentThunks";
+
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Details } from "@mui/icons-material";
-import Detail from "../components/Detail";
+
 import { setContentDetails } from "../redux/slices/contentSlice";
 
 const CustomGrid = ({ array }) => {

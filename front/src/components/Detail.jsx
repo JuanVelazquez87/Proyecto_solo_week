@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { removeFromFavorites } from "../redux/thunks/userThunks";
 
 const Detail = () => {
+  const dispatch = useDispatch();
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original/";
   const user = useSelector((state) => state.user.userData);
   let content = useSelector((state) => state.content.contentDetails);
+  const contentId = content.id;
   console.log("content", content, "user", user);
 
   const backgroundStyle = {
@@ -14,12 +16,19 @@ const Detail = () => {
     backgroundSize: "cover",
     opacity: 0.3,
   };
+
   let isFavorite;
   if (user) {
     isFavorite = user.favorites.find(
       (favorite) => favorite.contentId === content.id
     );
   }
+  const handleRemoveFavorite = (event, contentId) => {
+    event.stopPropagation();
+    const token = localStorage.getItem("token");
+    console.log("a ver aca", contentId);
+    removeFromFavorites(token, contentId, dispatch);
+  };
 
   return (
     <Grid
@@ -81,17 +90,25 @@ const Detail = () => {
       </Grid>
       (
       {isFavorite && (
-        <Button>
+        <IconButton
+          onClick={(event) => handleRemoveFavorite(event, contentId)}
+          sx={{
+            position: "absolute",
+            bottom: "10px",
+            right: "10px",
+            backgroundColor: "grey",
+          }}
+        >
           <DeleteIcon
             sx={{
               color: "lightgrey",
-              fontSize: "4em",
-              backgroundColor: "red",
+              fontSize: "2em",
+
               borderRadius: "100%",
               padding: "8px",
             }}
           />
-        </Button>
+        </IconButton>
       )}
       )
     </Grid>

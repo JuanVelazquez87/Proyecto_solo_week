@@ -2,7 +2,7 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { Box, Button, CardActionArea } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@emotion/react";
@@ -11,6 +11,7 @@ import {
   removeFromFavorites,
 } from "../redux/thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CustomCard = ({ content }) => {
   //
@@ -48,7 +49,7 @@ const CustomCard = ({ content }) => {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea style={{ position: "relative" }}>
         <CardMedia
           component="img"
           height="auto"
@@ -67,25 +68,48 @@ const CustomCard = ({ content }) => {
               bottom: "10px",
               right: "10px",
               backgroundColor: "rgba(255, 255, 255, 0.7)",
+              color: "grey",
+              border: "1px solid grey",
             }}
           >
             <FavoriteIcon />
           </IconButton>
         ) : (
-          <IconButton
-            aria-label="remove from favorites"
-            onClick={(event) =>
-              handleRemoveFavorite(event, contentId, media_type)
-            }
-            sx={{
-              position: "absolute",
-              bottom: "10px",
-              right: "10px",
-              color: "red",
-            }}
-          >
-            <FavoriteIcon />
-          </IconButton>
+          <Box>
+            <IconButton
+              sx={{
+                position: "absolute",
+                bottom: "10px",
+                right: "10px",
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+                color: "red",
+                borderColor: "red",
+              }}
+            >
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton
+              onClick={(event) =>
+                handleRemoveFavorite(event, contentId, media_type)
+              }
+              sx={{
+                position: "absolute",
+                bottom: "10px",
+                left: "10px",
+                backgroundColor: "grey",
+              }}
+            >
+              <DeleteIcon
+                sx={{
+                  color: "lightgrey",
+
+                  borderRadius: "100%",
+
+                  zIndex: 4,
+                }}
+              />
+            </IconButton>
+          </Box>
         )}
       </CardActionArea>
 
